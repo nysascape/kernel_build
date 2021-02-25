@@ -1071,14 +1071,6 @@ if [ ! -z "${BUILD_BOOT_IMG}" ] ; then
     exit 1
   fi
 
-  if [ -z "${MKBOOTIMG_PATH}" ]; then
-    MKBOOTIMG_PATH="tools/mkbootimg/mkbootimg.py"
-  fi
-  if [ ! -f "$MKBOOTIMG_PATH" ]; then
-    echo "mkbootimg.py script not found. MKBOOTIMG_PATH = $MKBOOTIMG_PATH"
-    exit 1
-  fi
-
   if [ ! -f "${DIST_DIR}/$KERNEL_BINARY" ]; then
     echo "kernel binary(KERNEL_BINARY = $KERNEL_BINARY) not present in ${DIST_DIR}"
     exit 1
@@ -1100,7 +1092,7 @@ if [ ! -z "${BUILD_BOOT_IMG}" ] ; then
     MKBOOTIMG_ARGS+=("--ramdisk" "${DIST_DIR}/ramdisk.${RAMDISK_EXT}")
   fi
 
-  "$MKBOOTIMG_PATH" --kernel "${DIST_DIR}/${KERNEL_BINARY}" \
+  mkbootimg --kernel "${DIST_DIR}/${KERNEL_BINARY}" \
     --header_version "${BOOT_IMAGE_HEADER_VERSION}" \
     "${MKBOOTIMG_ARGS[@]}" -o "${DIST_DIR}/boot.img"
   if [ -f "${DIST_DIR}/boot.img" ]; then
